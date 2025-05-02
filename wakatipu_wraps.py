@@ -1,14 +1,19 @@
 from tkinter import *
 
-class wraps:
+class Wraps:
     def __init__(self, name, price):
         self.name = name
         self.price = price
 
 
-class menu:
+class Menu:
     def __init__(self, parent):
-
+        self.food_menu = [
+            Wraps("Spicey", 7.00),
+            Wraps("Chicken", 6.00),
+            Wraps("Steak", 7.50),
+            Wraps("Desert", 6.00)
+        ]
         parent.title("Wakatipu Wraps")
         parent.geometry("600x400")
         parent.configure(padx=20, pady=20)
@@ -18,6 +23,7 @@ class menu:
         font_everything = ("Ariel", 11)
         self.current_item = 1
         self.display_item_num = "Add Item 1:"
+        self.selected_item = StringVar()
  
         self.ordering_frame = Frame(parent)
         self.current_items_frame = Frame(parent, bg="white", bd=2, relief='sunken')
@@ -30,7 +36,8 @@ class menu:
         # Ordering frame content
         self.label_title = Label(self.ordering_frame, text="Create Order:", font=font_title)
         self.label_add_item = Label(self.ordering_frame, text=self.display_item_num, font=font_mini_title)
-        self.label_item = Label (self.ordering_frame, text="What item would you like:", font=font_everything)
+        self.label_item = Label(self.ordering_frame, text="What wrap would you like:", font=font_everything)
+        self.item_dropdown = OptionMenu(self.ordering_frame, self.selected_item, self.food_menu)
         self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_everything)
         self.number_of_items = Entry(self.ordering_frame, width=10)
         self.button_add_item = Button(self.ordering_frame, text="Add Item", command=self.item_number, font=font_everything)
@@ -43,6 +50,7 @@ class menu:
         self.label_title.pack(anchor=W)
         self.label_add_item.pack(anchor=W, padx=(10))
         self.label_item.pack(anchor=W, padx=(10))
+        self.item_dropdown(anchor=W, padx=(10))
         self.label_how_many.pack(anchor=W, padx=(10))
         self.number_of_items.pack(anchor=W, padx=(10))
         self.button_add_item.pack(anchor=E, padx=(10), pady=(10))
@@ -71,5 +79,5 @@ class menu:
 if __name__ == "__main__":
     root = Tk()
     root.title("Wakatipu Wraps")
-    menu(root)
+    Menu(root)
     root.mainloop()
