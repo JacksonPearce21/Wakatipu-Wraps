@@ -34,7 +34,7 @@ class Menu:
 
         self.selected_item = StringVar()
         self.current_item_price = 0.00
-        self.displayed_price = ("Price: $" + str(self.current_item_price))
+        self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
  
         self.ordering_frame = Frame(parent)
         self.current_items_frame = Frame(parent)
@@ -50,7 +50,7 @@ class Menu:
 
         self.label_item = Label(self.ordering_frame, text="What wrap would you like:", font=font_everything)
         self.item_dropdown = OptionMenu(self.ordering_frame, self.selected_item, *self.wrap_names, command=self.update_price_label)
-        self.items_price_label = Label(self.ordering_frame, text=self.displayed_price, font=font_everything)
+        self.label_items_price = Label(self.ordering_frame, text=self.displayed_price, font=font_everything)
 
         self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_everything)
         self.number_of_items = Entry(self.ordering_frame, width=4)
@@ -69,7 +69,7 @@ class Menu:
         self.label_add_item.pack(anchor=W, padx=(10))
         self.label_item.pack(anchor=W, padx=(10))
         self.item_dropdown.pack(anchor=W, padx=(10))
-        self.items_price_label.pack(anchor=W, padx=(10))
+        self.label_items_price.pack(anchor=W, padx=(10))
         self.label_how_many.pack(anchor=W, padx=(10))
         self.number_of_items.pack(anchor=W, padx=(10))
         self.button_add_item.pack(anchor=E, padx=(10), pady=(10))
@@ -107,13 +107,13 @@ class Menu:
         for wrap in self.wrap_menu:
             if wrap.name == name:
                 return wrap.price
-            else:
-                return 0.00
+        return 0.00
             
     
-    def update_price_label(self):
-        self.current_item_price = self.get_price(self.selected_item.get())
-        self.displayed_price = ("Price: $" + str(self.current_item_price))
+    def update_price_label(self, selection):
+        self.current_item_price = self.get_price(selection)
+        self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
+        self.label_items_price.config(text=self.displayed_price)
 
 
 
