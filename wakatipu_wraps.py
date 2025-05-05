@@ -12,12 +12,15 @@ class Menu:
             Wraps("Spicey", 7.00),
             Wraps("Chicken", 6.00),
             Wraps("Steak", 7.50),
-            Wraps("Desert", 6.00)
+            Wraps("Desert", 6.50)
         ]
 
         self.wrap_names = []
+        self.wrap_prices = []
         for wrap in self.wrap_menu:
             self.wrap_names.append(wrap.name)
+        for wrap in self.wrap_menu:
+            self.wrap_prices.append(wrap.price)
     
         parent.title("Wakatipu Wraps")
         parent.geometry("600x400")
@@ -31,7 +34,7 @@ class Menu:
         self.selected_item = StringVar()
  
         self.ordering_frame = Frame(parent)
-        self.current_items_frame = Frame(parent, bg="white", bd=2, relief='sunken')
+        self.current_items_frame = Frame(parent)
         self.history_frame = Frame(parent)
 
         self.ordering_frame.grid(row=0, column=0)
@@ -48,7 +51,7 @@ class Menu:
         self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_everything)
         self.number_of_items = Entry(self.ordering_frame, width=10)
 
-        self.button_add_item = Button(self.ordering_frame, text="Add Item", command=self.item_number, font=font_everything)
+        self.button_add_item = Button(self.ordering_frame, text="Add Item", command=self.adding_item, font=font_everything)
 
         self.label_complete_order = Label(self.ordering_frame, text="Completing order:",font=font_mini_title)
 
@@ -71,11 +74,20 @@ class Menu:
         self.button_complete_order.pack(anchor=E, padx=(10), pady=(10))
 
         # Current items frame content
-        self.label_all_items = Label(self.current_items_frame, text="Current Items:", font=font_mini_title, bg="white")
+        self.items_listbox = Listbox(self.current_items_frame, width=40, height=15, bd=2, bg ="white", relief="sunken")
+        self.label_all_items = Label(self.current_items_frame, text="Current Items:", font=font_mini_title)
+    
 
         # Current items packing
         self.label_all_items.pack(anchor=W, padx=(10))
+        self.items_listbox.pack(anchor=W, padx=(10))
 
+
+    def adding_item(self):
+        item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps")
+        self.items_listbox.insert(END, item_order)
+            
+        self.item_number()
 
 
     def item_number(self):
