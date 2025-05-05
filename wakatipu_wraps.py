@@ -19,11 +19,8 @@ class Menu:
         self.wrap_prices = []
         for wrap in self.wrap_menu:
             self.wrap_names.append(wrap.name)
-        for wrap in self.wrap_menu:
-            self.wrap_prices.append(wrap.price)
 
-        
-    
+
         parent.title("Wakatipu Wraps")
         parent.geometry("600x400")
         parent.configure(padx=20, pady=20)
@@ -31,9 +28,13 @@ class Menu:
         font_title = ("Helvetica", 16, "bold")
         font_mini_title = ("Helvetica", 14, "bold")
         font_everything = ("Helvetica", 11)
+
         self.current_item = 1
         self.display_item_num = "Add Item 1:"
+
         self.selected_item = StringVar()
+        self.current_item_price = 0.00
+        self.displayed_price = ("Price: $" + str(self.current_item_price))
  
         self.ordering_frame = Frame(parent)
         self.current_items_frame = Frame(parent)
@@ -48,7 +49,8 @@ class Menu:
         self.label_add_item = Label(self.ordering_frame, text=self.display_item_num, font=font_mini_title)
 
         self.label_item = Label(self.ordering_frame, text="What wrap would you like:", font=font_everything)
-        self.item_dropdown = OptionMenu(self.ordering_frame, self.selected_item, *self.wrap_names)
+        self.item_dropdown = OptionMenu(self.ordering_frame, self.selected_item, *self.wrap_names, command=self.update_price_label)
+        self.items_price_label = Label(self.ordering_frame, text=self.displayed_price, font=font_everything)
 
         self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_everything)
         self.number_of_items = Entry(self.ordering_frame, width=4)
@@ -67,6 +69,7 @@ class Menu:
         self.label_add_item.pack(anchor=W, padx=(10))
         self.label_item.pack(anchor=W, padx=(10))
         self.item_dropdown.pack(anchor=W, padx=(10))
+        self.items_price_label.pack(anchor=W, padx=(10))
         self.label_how_many.pack(anchor=W, padx=(10))
         self.number_of_items.pack(anchor=W, padx=(10))
         self.button_add_item.pack(anchor=E, padx=(10), pady=(10))
@@ -86,9 +89,9 @@ class Menu:
 
 
     def adding_item(self):
+        """"""
         item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps")
         self.items_listbox.insert(END, item_order)
-            
         self.item_number()
 
 
@@ -97,6 +100,21 @@ class Menu:
         self.current_item += 1
         self.display_item_num = ("Add Item " + str(self.current_item) + ":")
         self.label_add_item.config(text=self.display_item_num)
+
+
+    def get_price(self, name):
+        """"""
+        for wrap in self.wrap_menu:
+            if wrap.name == name:
+                return wrap.price
+            else:
+                return 0.00
+            
+    
+    def update_price_label(self):
+        self.current_item_price = self.get_price(self.selected_item.get())
+        self.displayed_price = ("Price: $" + str(self.current_item_price))
+
 
 
 
