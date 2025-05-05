@@ -13,7 +13,7 @@ class Menu:
             Wraps("Chicken", 6.00),
             Wraps("Steak", 7.50),
             Wraps("Desert", 6.50)
-        ]
+            ]
 
         self.wrap_names = []
         self.wrap_prices = []
@@ -21,6 +21,8 @@ class Menu:
             self.wrap_names.append(wrap.name)
         for wrap in self.wrap_menu:
             self.wrap_prices.append(wrap.price)
+
+        
     
         parent.title("Wakatipu Wraps")
         parent.geometry("600x400")
@@ -49,7 +51,7 @@ class Menu:
         self.item_dropdown = OptionMenu(self.ordering_frame, self.selected_item, *self.wrap_names)
 
         self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_everything)
-        self.number_of_items = Entry(self.ordering_frame, width=10)
+        self.number_of_items = Entry(self.ordering_frame, width=4)
 
         self.button_add_item = Button(self.ordering_frame, text="Add Item", command=self.adding_item, font=font_everything)
 
