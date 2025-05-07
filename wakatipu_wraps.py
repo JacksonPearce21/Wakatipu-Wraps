@@ -9,9 +9,9 @@ class Wraps:
 class Menu:
     def __init__(self, parent):
         self.wrap_menu = [
-            Wraps("Spicey", 7.00),
-            Wraps("Chicken", 6.00),
-            Wraps("Steak", 7.50),
+            Wraps("Spicey", 7.99),
+            Wraps("Chicken", 5.99),
+            Wraps("Steak", 7.75),
             Wraps("Desert", 6.50)
             ]
 
@@ -35,6 +35,7 @@ class Menu:
         self.selected_item = StringVar()
         self.current_item_price = 0.00
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
+        self.order_total_price = []
  
         self.ordering_frame = Frame(parent)
         self.current_items_frame = Frame(parent)
@@ -90,9 +91,17 @@ class Menu:
 
     def adding_item(self):
         """"""
-        item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps")
+        self.item_price_calc()
+        item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
         self.item_number()
+
+    def item_price_calc(self):
+        """"""
+        quantity = int(self.number_of_items.get())
+        self.items_value = self.current_item_price * quantity
+        self.order_total_price.append(self.items_value)
+
 
 
     def item_number(self):
@@ -107,7 +116,6 @@ class Menu:
         for wrap in self.wrap_menu:
             if wrap.name == name:
                 return wrap.price
-        return 0.00
             
     
     def update_price_label(self, selection):
