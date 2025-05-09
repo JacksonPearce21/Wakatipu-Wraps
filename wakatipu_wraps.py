@@ -35,7 +35,10 @@ class Menu:
         self.selected_item = StringVar()
         self.current_item_price = 0.00
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
+
         self.order_total_price = []
+        self.order_price = sum(self.order_total_price)
+        self.displayed_order_price = "Order Price: $" + format(self.order_price, ".2f")
  
         self.ordering_frame = Frame(parent)
         self.current_items_frame = Frame(parent)
@@ -82,11 +85,13 @@ class Menu:
         # Current items frame content
         self.items_listbox = Listbox(self.current_items_frame, width=40, height=15, bd=2, bg ="white", relief="sunken")
         self.label_all_items = Label(self.current_items_frame, text="Current Items:", font=font_mini_title)
+        self.label_order_price = Label(self.current_items_frame, text=self.displayed_order_price, font=font_everything)
     
 
         # Current items packing
         self.label_all_items.pack(anchor=W, padx=(10))
         self.items_listbox.pack(anchor=W, padx=(10))
+        self.label_order_price.pack(anchor=W, padx=(10))
 
 
     def adding_item(self):
@@ -95,6 +100,7 @@ class Menu:
         item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
         self.item_number()
+        self.order_price_calc()
 
     def item_price_calc(self):
         """"""
@@ -102,6 +108,12 @@ class Menu:
         self.items_value = self.current_item_price * quantity
         self.order_total_price.append(self.items_value)
 
+
+    def order_price_calc(self):
+        """"""
+        self.order_price = sum(self.order_total_price)
+        self.displayed_order_price = "Order Price: $" + format(self.order_price, ".2f")
+        self.label_order_price.config(text=self.displayed_order_price)
 
 
     def item_number(self):
@@ -122,8 +134,6 @@ class Menu:
         self.current_item_price = self.get_price(selection)
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
         self.label_items_price.config(text=self.displayed_price)
-
-
 
 
 
