@@ -22,12 +22,12 @@ class Menu:
 
 
         parent.title("Wakatipu Wraps")
-        parent.geometry("600x400")
+        parent.geometry("600x425")
         parent.configure(padx=20, pady=20)
 
         font_title = ("Helvetica", 16, "bold")
         font_mini_title = ("Helvetica", 14, "bold")
-        font_everything = ("Helvetica", 11)
+        font_default = ("Helvetica", 11)
 
         self.current_item = 1
         self.display_item_num = "Add Item 1:"
@@ -42,31 +42,32 @@ class Menu:
  
         self.ordering_frame = Frame(parent)
         self.current_items_frame = Frame(parent)
-        self.history_frame = Frame(parent)
 
         self.ordering_frame.grid(row=0, column=0)
         self.current_items_frame.grid(row=0, column=1, sticky=N, padx=10, pady=25)
 
+        self.previous_orders_frame = Frame(parent)
 
         # Ordering frame content
         self.label_title = Label(self.ordering_frame, text="Create Order:", font=font_title)
         self.label_add_item = Label(self.ordering_frame, text=self.display_item_num, font=font_mini_title)
 
-        self.label_item = Label(self.ordering_frame, text="What wrap would you like:", font=font_everything)
+        self.label_item = Label(self.ordering_frame, text="What wrap would you like:", font=font_default)
         self.item_dropdown = OptionMenu(self.ordering_frame, self.selected_item, *self.wrap_names, command=self.update_price_label)
-        self.label_items_price = Label(self.ordering_frame, text=self.displayed_price, font=font_everything)
+        self.label_items_price = Label(self.ordering_frame, text=self.displayed_price, font=font_default)
 
-        self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_everything)
+        self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_default)
         self.number_of_items = Entry(self.ordering_frame, width=4)
 
-        self.button_add_item = Button(self.ordering_frame, text="Add Item", command=self.adding_item, font=font_everything)
+        self.button_add_item = Button(self.ordering_frame, text="Add Item", command=self.adding_item, font=font_default)
 
         self.label_complete_order = Label(self.ordering_frame, text="Completing order:",font=font_mini_title)
 
-        self.name_entry_label = Label(self.ordering_frame, text="Name:", font=font_everything)
+        self.name_entry_label = Label(self.ordering_frame, text="Name:", font=font_default)
         self.name_entry = Entry(self.ordering_frame, width=45)
         
-        self.button_complete_order = Button(self.ordering_frame, text="Place Order", font=font_everything)
+        self.button_complete_order = Button(self.ordering_frame, text="Place Order", font=font_default, command=self.place_order)
+        self.check_order_history = Button(self.ordering_frame, text ="Previous Orders", font=font_default, command=self.order_history)
 
         # Ordering frame packing
         self.label_title.pack(anchor=W)
@@ -81,17 +82,29 @@ class Menu:
         self.name_entry_label.pack(anchor=W, padx=(10))
         self.name_entry.pack(anchor=W, padx=(10))
         self.button_complete_order.pack(anchor=E, padx=(10), pady=(10))
+        self.check_order_history.pack(anchor=E, padx=(10), pady=(5))
 
         # Current items frame content
         self.items_listbox = Listbox(self.current_items_frame, width=40, height=15, bd=2, bg ="white", relief="sunken")
         self.label_all_items = Label(self.current_items_frame, text="Current Items:", font=font_mini_title)
-        self.label_order_price = Label(self.current_items_frame, text=self.displayed_order_price, font=font_everything)
+        self.label_order_price = Label(self.current_items_frame, text=self.displayed_order_price, font=font_default)
     
-
         # Current items packing
         self.label_all_items.pack(anchor=W, padx=(10))
         self.items_listbox.pack(anchor=W, padx=(10))
         self.label_order_price.pack(anchor=W, padx=(10))
+
+        # Orders frame content
+        self.label_previous_orders = Label(self.previous_orders_frame, text="Previous Orders:", font=font_title)
+        self.prev_orders_listbox = Listbox(self.previous_orders_frame, width=40, height=15, bd=2, bg ="white", relief="sunken")
+        self.back_to_order = Button(self.previous_orders_frame, text="Return To Ordering", command=self.return_to_order, font=font_default)
+
+
+        # Orders packing
+        self.prev_orders_listbox.pack()
+        self.back_to_order.pack()
+
+
 
 
     def adding_item(self):
@@ -101,6 +114,12 @@ class Menu:
         self.items_listbox.insert(END, item_order)
         self.item_number()
         self.order_price_calc()
+
+    def place_order(self):
+        """"""
+        order_info = ("Name: " + self.name_entry.get() + ", " + self.displayed_order_price + ".")
+        self.prev_orders_listbox.insert(END, order_info)
+
 
     def item_price_calc(self):
         """"""
@@ -135,6 +154,17 @@ class Menu:
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
         self.label_items_price.config(text=self.displayed_price)
 
+
+    def return_to_order(self):
+        self.previous_orders_frame.grid_forget()
+        self.ordering_frame.grid(row=0, column=0)
+        self.current_items_frame.grid(row=0, column=1, sticky=N, padx=10, pady=25)
+
+
+    def order_history(self):
+        self.ordering_frame.grid_forget()
+        self.current_items_frame.grid_forget()
+        self.previous_orders_frame.grid()
 
 
 if __name__ == "__main__":
