@@ -36,7 +36,7 @@ class Menu:
         self.quantity_var = StringVar()
         self.name_var = StringVar()
         self.selected_item = StringVar()
-        self.selected_item.set("Select wrap")
+        self.selected_item.set("Select Wrap")
 
         self.current_item_price = 0.00
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
@@ -115,12 +115,15 @@ class Menu:
 
     def adding_item(self):
         """"""
+        if self.selected_item.get() == "Select Wrap":
+            messagebox.showerror("No Wrap Selected", "Please select a wrap from the dropdown menu.")
+            return
+
         try:
             if int(self.number_of_items.get()) < 1:
                 raise ValueError
         except ValueError:
             messagebox.showerror("Invalid Item Quantity", "Please enter a positive whole number for the quantity")
-            self.reset_add_item()
         self.item_price_calc()
         item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
@@ -132,7 +135,7 @@ class Menu:
 
     def reset_add_item(self):
         """"""
-        self.selected_item.set("Select wrap")
+        self.selected_item.set("Select Wrap")
         self.label_items_price.config(text="Price: $0.00")
         self.current_item_price = 0.00
         self.quantity_var.set("")
