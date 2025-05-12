@@ -25,18 +25,19 @@ class Menu:
         parent.geometry("600x425")
         parent.configure(padx=20, pady=20)
 
-        font_title = ("Helvetica", 16, "bold")
-        font_mini_title = ("Helvetica", 14, "bold")
-        font_default = ("Helvetica", 11)
+        font_title = ("Verdana", 18, "bold")
+        font_mini_title = ("Verdana", 14, "bold")
+        font_default = ("Verdana", 11)
 
         self.current_item = 1
         self.display_item_num = "Add Item 1:"
 
+        self.quantity_var = StringVar()
+        self.name_var = StringVar()
         self.selected_item = StringVar()
+
         self.current_item_price = 0.00
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
-
-        self.quantity_var = StringVar()
 
         self.order_total_price = []
         self.order_price = sum(self.order_total_price)
@@ -67,7 +68,7 @@ class Menu:
         self.label_complete_order = Label(self.ordering_frame, text="Completing order:",font=font_mini_title)
 
         self.name_entry_label = Label(self.ordering_frame, text="Name:", font=font_default)
-        self.name_entry = Entry(self.ordering_frame, width=45)
+        self.name_entry = Entry(self.ordering_frame, width=45, textvariable=self.name_var)
         
         self.button_complete_order = Button(self.ordering_frame, text="Place Order", font=font_default, command=self.place_order)
         self.check_order_history = Button(self.ordering_frame, text ="Previous Orders", font=font_default, command=self.order_history)
@@ -104,9 +105,9 @@ class Menu:
 
 
         # Orders packing
+        self.label_previous_orders.pack()
         self.prev_orders_listbox.pack()
         self.back_to_order.pack()
-
 
 
 
@@ -115,6 +116,7 @@ class Menu:
         self.item_price_calc()
         item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
+        self.current_item += 1
         self.item_number()
         self.order_price_calc()
         self.reset_add_item()
@@ -127,10 +129,23 @@ class Menu:
         self.quantity_var.set("")
 
 
+    def reset_order(self):
+        self.reset_add_item()
+        self.items_listbox.delete(0, END)
+        self.order_total_price.clear()
+        self.name_var.set("")
+        self.current_item = 1
+        self.item_number()
+
+
+
     def place_order(self):
         """"""
         order_info = ("Name: " + self.name_entry.get() + ", " + self.displayed_order_price + ".")
         self.prev_orders_listbox.insert(END, order_info)
+        self.reset_order()
+        self.order_price_calc()
+        self.order_history()
 
 
     def item_price_calc(self):
@@ -149,7 +164,6 @@ class Menu:
 
     def item_number(self):
         """This function increases the item number, displaying the current number of item in label_add_item"""
-        self.current_item += 1
         self.display_item_num = ("Add Item " + str(self.current_item) + ":")
         self.label_add_item.config(text=self.display_item_num)
 
