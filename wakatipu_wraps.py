@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 
 class Wraps:
     def __init__(self, name, price):
@@ -35,6 +36,7 @@ class Menu:
         self.quantity_var = StringVar()
         self.name_var = StringVar()
         self.selected_item = StringVar()
+        self.selected_item.set("Select wrap")
 
         self.current_item_price = 0.00
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
@@ -113,6 +115,12 @@ class Menu:
 
     def adding_item(self):
         """"""
+        try:
+            if int(self.number_of_items.get()) < 1:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Invalid Item Quantity", "Please enter a positive whole number for the quantity")
+            self.reset_add_item()
         self.item_price_calc()
         item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
@@ -123,20 +131,22 @@ class Menu:
 
 
     def reset_add_item(self):
-        self.selected_item.set('')
+        """"""
+        self.selected_item.set("Select wrap")
         self.label_items_price.config(text="Price: $0.00")
         self.current_item_price = 0.00
         self.quantity_var.set("")
 
 
     def reset_order(self):
+        """"""
         self.reset_add_item()
         self.items_listbox.delete(0, END)
         self.order_total_price.clear()
+        self.order_price_calc()
         self.name_var.set("")
         self.current_item = 1
         self.item_number()
-
 
 
     def place_order(self):
@@ -144,7 +154,6 @@ class Menu:
         order_info = ("Name: " + self.name_entry.get() + ", " + self.displayed_order_price + ".")
         self.prev_orders_listbox.insert(END, order_info)
         self.reset_order()
-        self.order_price_calc()
         self.order_history()
 
 
