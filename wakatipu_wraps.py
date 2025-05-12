@@ -36,6 +36,8 @@ class Menu:
         self.current_item_price = 0.00
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
 
+        self.quantity_var = StringVar()
+
         self.order_total_price = []
         self.order_price = sum(self.order_total_price)
         self.displayed_order_price = "Order Price: $" + format(self.order_price, ".2f")
@@ -54,10 +56,11 @@ class Menu:
 
         self.label_item = Label(self.ordering_frame, text="What wrap would you like:", font=font_default)
         self.item_dropdown = OptionMenu(self.ordering_frame, self.selected_item, *self.wrap_names, command=self.update_price_label)
+        self.item_dropdown.config(width=10)
         self.label_items_price = Label(self.ordering_frame, text=self.displayed_price, font=font_default)
 
         self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_default)
-        self.number_of_items = Entry(self.ordering_frame, width=4)
+        self.number_of_items = Entry(self.ordering_frame, width=4, textvariable=self.quantity_var)
 
         self.button_add_item = Button(self.ordering_frame, text="Add Item", command=self.adding_item, font=font_default)
 
@@ -114,6 +117,15 @@ class Menu:
         self.items_listbox.insert(END, item_order)
         self.item_number()
         self.order_price_calc()
+        self.reset_add_item()
+
+
+    def reset_add_item(self):
+        self.selected_item.set('')
+        self.label_items_price.config(text="Price: $0.00")
+        self.current_item_price = 0.00
+        self.quantity_var.set("")
+
 
     def place_order(self):
         """"""
@@ -150,18 +162,21 @@ class Menu:
             
     
     def update_price_label(self, selection):
+        """"""
         self.current_item_price = self.get_price(selection)
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
         self.label_items_price.config(text=self.displayed_price)
 
 
     def return_to_order(self):
+        """"""
         self.previous_orders_frame.grid_forget()
         self.ordering_frame.grid(row=0, column=0)
         self.current_items_frame.grid(row=0, column=1, sticky=N, padx=10, pady=25)
 
 
     def order_history(self):
+        """"""
         self.ordering_frame.grid_forget()
         self.current_items_frame.grid_forget()
         self.previous_orders_frame.grid()
