@@ -29,6 +29,7 @@ class Menu:
         font_title = ("Verdana", 18, "bold")
         font_mini_title = ("Verdana", 14, "bold")
         font_default = ("Verdana", 11)
+        font_listbox = ("Verdana", 9)
 
         frame_colour = "#ffffff"
         button_frame_bg = "#D62828"
@@ -96,7 +97,7 @@ class Menu:
         self.check_order_history.pack(anchor=E, padx=(10), pady=(3))
 
         # Current items frame content
-        self.items_listbox = Listbox(self.current_items_frame, width=45, height=18, bd=3, bg=frame_colour, relief="sunken", font=font_default)
+        self.items_listbox = Listbox(self.current_items_frame, width=32, height=18, bd=3, bg=frame_colour, relief="sunken", font=font_listbox)
         self.label_all_items = Label(self.current_items_frame, text="Current Items", font=font_title, bg=frame_colour)
         self.label_order_price = Label(self.current_items_frame, text=self.displayed_order_price, font=font_default, bg=frame_colour)
     
@@ -107,7 +108,7 @@ class Menu:
 
         # Orders frame content
         self.label_previous_orders = Label(self.previous_orders_frame, text="Previous Orders", font=font_title, bg=frame_colour)
-        self.prev_orders_listbox = Listbox(self.previous_orders_frame, width=45, height=19, bd=3, bg=frame_colour, relief="sunken")
+        self.prev_orders_listbox = Listbox(self.previous_orders_frame, width=35, height=21, bd=3, bg=frame_colour, relief="sunken", font=font_listbox)
         self.back_to_order = Button(self.previous_orders_frame, text="Return To Ordering", command=self.return_to_order, font=font_default, bg= button_frame_bg, fg=frame_colour)
 
 
@@ -119,10 +120,11 @@ class Menu:
 
 
     def adding_item(self):
-        """"""
+        """ """
         if self.selected_item.get() == "Select Wrap":
             messagebox.showerror("No Wrap Selected", "Please select a wrap from the dropdown menu.")
             return
+        
         try:
             if int(self.number_of_items.get()) < 1 or int(self.number_of_items.get()) > 99:
                 messagebox.showerror("Invalid Item Quantity", "Please enter a number between 1-99 for the quantity")
@@ -132,6 +134,7 @@ class Menu:
             messagebox.showerror("Invalid Item Quantity", "Please enter a whole number for the quantity")
             self.quantity_var.set("")
             return
+        
         self.item_price_calc()
         item_order = (" Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
@@ -142,7 +145,7 @@ class Menu:
 
 
     def reset_add_item(self):
-        """"""
+        """ """
         self.selected_item.set("Select Wrap")
         self.label_items_price.config(text="Price: $0.00")
         self.current_item_price = 0.00
@@ -150,7 +153,7 @@ class Menu:
 
 
     def reset_order(self):
-        """"""
+        """ """
         self.reset_add_item()
         self.items_listbox.delete(0, END)
         self.order_total_price.clear()
@@ -161,7 +164,7 @@ class Menu:
 
 
     def place_order(self):
-        """"""
+        """ """
         name = self.name_entry.get().strip()
         if name == "":
             messagebox.showerror("Invalid Name", "Name field cannot be empty.")
@@ -178,14 +181,14 @@ class Menu:
 
 
     def item_price_calc(self):
-        """"""
+        """ """
         quantity = int(self.number_of_items.get())
         self.items_value = self.current_item_price * quantity
         self.order_total_price.append(self.items_value)
 
 
     def order_price_calc(self):
-        """"""
+        """ """
         self.order_price = sum(self.order_total_price)
         self.displayed_order_price = "Order Price: $" + format(self.order_price, ".2f")
         self.label_order_price.config(text=self.displayed_order_price)
@@ -198,28 +201,28 @@ class Menu:
 
 
     def get_price(self, name):
-        """"""
+        """ """
         for wrap in self.wrap_menu:
             if wrap.name == name:
                 return wrap.price
             
     
     def update_price_label(self, selection):
-        """"""
+        """ """
         self.current_item_price = self.get_price(selection)
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
         self.label_items_price.config(text=self.displayed_price)
 
 
     def return_to_order(self):
-        """"""
+        """ """
         self.previous_orders_frame.grid_forget()
         self.ordering_frame.grid(row=0, column=0, sticky= N)
         self.current_items_frame.grid(row=0, column=1, sticky= N, padx=10, pady=0)
 
 
     def order_history(self):
-        """"""
+        """ """
         self.ordering_frame.grid_forget()
         self.current_items_frame.grid_forget()
         self.previous_orders_frame.grid()
