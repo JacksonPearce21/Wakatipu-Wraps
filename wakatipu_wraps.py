@@ -23,7 +23,7 @@ class Menu:
 
 
         parent.title("Wakatipu Wraps")
-        parent.geometry("600x425")
+        parent.geometry("610x440")
         parent.configure(padx=20, pady=20)
 
         font_title = ("Verdana", 18, "bold")
@@ -50,8 +50,8 @@ class Menu:
         self.ordering_frame = Frame(parent, bg=frame_colour, relief='groove', bd= 2)
         self.current_items_frame = Frame(parent, bg=frame_colour, relief="groove", bd= 2)
 
-        self.ordering_frame.grid(row=0, column=0)
-        self.current_items_frame.grid(row=0, column=1, sticky=N, padx=10, pady=25)
+        self.ordering_frame.grid(row=0, column=0, sticky= N)
+        self.current_items_frame.grid(row=0, column=1, sticky= N, padx=10, pady=0)
 
         self.previous_orders_frame = Frame(parent, bg=frame_colour, relief="groove", bd=2)
 
@@ -71,7 +71,7 @@ class Menu:
 
         self.label_complete_order = Label(self.ordering_frame, text="Completing order:",font=font_mini_title, bg=frame_colour)
 
-        self.name_entry_label = Label(self.ordering_frame, text="Name:", font=font_default)
+        self.name_entry_label = Label(self.ordering_frame, text="Name:", font=font_default, bg=frame_colour)
         self.name_entry = Entry(self.ordering_frame, width=45, textvariable=self.name_var)
         
         self.button_complete_order = Button(self.ordering_frame, text="Place Order", font=font_default, command=self.place_order)
@@ -88,30 +88,30 @@ class Menu:
         self.button_add_item.pack(anchor=E, padx=(10), pady=(10))
         self.label_complete_order.pack(anchor=W, padx=(10))
         self.name_entry_label.pack(anchor=W, padx=(10))
-        self.name_entry.pack(anchor=W, padx=(10))
-        self.button_complete_order.pack(anchor=E, padx=(10), pady=(10))
-        self.check_order_history.pack(anchor=E, padx=(10), pady=(5))
+        self.name_entry.pack(anchor=W, padx=(14))
+        self.button_complete_order.pack(anchor=E, padx=(10), pady=(5))
+        self.check_order_history.pack(anchor=E, padx=(10), pady=(3))
 
         # Current items frame content
-        self.items_listbox = Listbox(self.current_items_frame, width=40, height=15, bd=2, bg ="white", relief="sunken")
+        self.items_listbox = Listbox(self.current_items_frame, width=40, height=18, bd=2, bg=frame_colour, relief="sunken")
         self.label_all_items = Label(self.current_items_frame, text="Current Items:", font=font_mini_title, bg=frame_colour)
         self.label_order_price = Label(self.current_items_frame, text=self.displayed_order_price, font=font_default, bg=frame_colour)
     
         # Current items packing
-        self.label_all_items.pack(anchor=W, padx=(10))
-        self.items_listbox.pack(anchor=W, padx=(10))
-        self.label_order_price.pack(anchor=W, padx=(10))
+        self.label_all_items.pack(anchor=W, padx=(10), pady=(3))
+        self.items_listbox.pack(anchor=W, padx=(10), pady=(3))
+        self.label_order_price.pack(anchor=W, padx=(10), pady=(3))
 
         # Orders frame content
         self.label_previous_orders = Label(self.previous_orders_frame, text="Previous Orders:", font=font_title, bg=frame_colour)
-        self.prev_orders_listbox = Listbox(self.previous_orders_frame, width=40, height=15, bd=2, bg ="white", relief="sunken")
+        self.prev_orders_listbox = Listbox(self.previous_orders_frame, width=40, height=18, bd=2, bg=frame_colour, relief="sunken")
         self.back_to_order = Button(self.previous_orders_frame, text="Return To Ordering", command=self.return_to_order, font=font_default)
 
 
         # Orders packing
-        self.label_previous_orders.pack()
-        self.prev_orders_listbox.pack()
-        self.back_to_order.pack()
+        self.label_previous_orders.pack(anchor=W, pady=(3))
+        self.prev_orders_listbox.pack(anchor=W, padx=(10), pady=(3))
+        self.back_to_order.pack(anchor=W, padx=(10), pady=(3))
 
 
 
@@ -125,13 +125,12 @@ class Menu:
                 messagebox.showerror("Invalid Item Quantity", "Please enter a number between 1-99 for the quantity")
                 self.quantity_var.set("")
                 return
-
         except ValueError:
             messagebox.showerror("Invalid Item Quantity", "Please enter a whole number for the quantity")
             self.quantity_var.set("")
             return
         self.item_price_calc()
-        item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
+        item_order = (" Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
         self.current_item += 1
         self.item_number()
@@ -168,7 +167,7 @@ class Menu:
         if len(self.order_total_price) == 0:
             messagebox.showerror("Empty Order", "Please add items to your order.")
             return
-        order_info = ("Name: " + self.name_entry.get() + ", " + self.displayed_order_price + ".")
+        order_info = (" Name: " + self.name_entry.get() + ", " + self.displayed_order_price + ".")
         self.prev_orders_listbox.insert(END, order_info)
         messagebox.showinfo("Order Placed", order_info)
         self.reset_order()
@@ -212,8 +211,8 @@ class Menu:
     def return_to_order(self):
         """"""
         self.previous_orders_frame.grid_forget()
-        self.ordering_frame.grid(row=0, column=0)
-        self.current_items_frame.grid(row=0, column=1, sticky=N, padx=10, pady=25)
+        self.ordering_frame.grid(row=0, column=0, sticky= N)
+        self.current_items_frame.grid(row=0, column=1, sticky= N, padx=10, pady=0)
 
 
     def order_history(self):
