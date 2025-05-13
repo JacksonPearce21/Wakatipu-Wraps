@@ -123,7 +123,8 @@ class Menu:
                 raise ValueError
         except ValueError:
             messagebox.showerror("Invalid Item Quantity", "Please enter a positive whole number for the quantity")
-
+            self.quantity_var.set("")
+            return
         self.item_price_calc()
         item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
@@ -157,9 +158,14 @@ class Menu:
         name = self.name_entry.get().strip()
         if name == "":
             messagebox.showerror("Invalid Name", "Name field cannot be empty.")
+            self.name_var.set("")
+            return
+        if len(self.order_total_price) == 0:
+            messagebox.showerror("Empty Order", "Please add items to your order.")
             return
         order_info = ("Name: " + self.name_entry.get() + ", " + self.displayed_order_price + ".")
         self.prev_orders_listbox.insert(END, order_info)
+        messagebox.showinfo("Order Placed", order_info)
         self.reset_order()
         self.order_history()
 
