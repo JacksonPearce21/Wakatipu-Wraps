@@ -9,6 +9,7 @@ class Wraps:
 
 class Menu:
     def __init__(self, parent):
+        # Menu
         self.wrap_menu = [
             Wraps("Spicey", 7.99),
             Wraps("Chicken", 5.99),
@@ -17,15 +18,15 @@ class Menu:
             ]
 
         self.wrap_names = []
-        self.wrap_prices = []
         for wrap in self.wrap_menu:
             self.wrap_names.append(wrap.name)
 
-
+        # Window Setup
         parent.title("Wakatipu Wraps")
         parent.geometry("630x440")
         parent.configure(padx=20, pady=20)
 
+        # Fonts + Colours
         font_title = ("Verdana", 18, "bold")
         font_mini_title = ("Verdana", 14, "bold")
         font_default = ("Verdana", 11)
@@ -36,6 +37,7 @@ class Menu:
         add_button_bg = "#66CDAA"
         order_button_bg = "#0077B6"
 
+        # Variables
         self.current_item = 1
         self.display_item_num = "Add Item 1:"
 
@@ -50,7 +52,8 @@ class Menu:
         self.order_total_price = []
         self.order_price = sum(self.order_total_price)
         self.displayed_order_price = "Order Price: $" + format(self.order_price, ".2f")
- 
+
+        # Frames
         self.ordering_frame = Frame(parent, bg=frame_colour, relief='groove', bd= 2)
         self.current_items_frame = Frame(parent, bg=frame_colour, relief="groove", bd= 2)
         self.previous_orders_frame = Frame(parent, bg=frame_colour, relief="groove", bd=2)
@@ -59,7 +62,9 @@ class Menu:
         self.current_items_frame.grid(row=0, column=1, sticky= N, padx=10, pady=0)
 
         # Ordering frame content
+
         self.label_title = Label(self.ordering_frame, text="Create Order", font=font_title, bg=frame_colour)
+        
         self.label_add_item = Label(self.ordering_frame, text=self.display_item_num, font=font_mini_title, bg=frame_colour)
 
         self.label_item = Label(self.ordering_frame, text="What wrap would you like:", font=font_default, bg=frame_colour)
@@ -117,6 +122,7 @@ class Menu:
         self.back_to_order.pack(anchor=E, padx=(10), pady=(3))
 
 
+    # --- Functions ---
 
     def adding_item(self):
         """
@@ -254,7 +260,6 @@ class Menu:
         self.ordering_frame.grid_forget()
         self.current_items_frame.grid_forget()
         self.previous_orders_frame.grid()
-
 
 if __name__ == "__main__":
     root = Tk()
