@@ -118,12 +118,12 @@ class Menu:
         if self.selected_item.get() == "Select Wrap":
             messagebox.showerror("No Wrap Selected", "Please select a wrap from the dropdown menu.")
             return
-
         try:
             if int(self.number_of_items.get()) < 1:
                 raise ValueError
         except ValueError:
             messagebox.showerror("Invalid Item Quantity", "Please enter a positive whole number for the quantity")
+
         self.item_price_calc()
         item_order = ("Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
@@ -154,6 +154,10 @@ class Menu:
 
     def place_order(self):
         """"""
+        name = self.name_entry.get().strip()
+        if name == "":
+            messagebox.showerror("Invalid Name", "Name field cannot be empty.")
+            return
         order_info = ("Name: " + self.name_entry.get() + ", " + self.displayed_order_price + ".")
         self.prev_orders_listbox.insert(END, order_info)
         self.reset_order()
