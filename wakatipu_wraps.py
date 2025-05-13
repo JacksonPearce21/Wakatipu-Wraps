@@ -53,11 +53,10 @@ class Menu:
  
         self.ordering_frame = Frame(parent, bg=frame_colour, relief='groove', bd= 2)
         self.current_items_frame = Frame(parent, bg=frame_colour, relief="groove", bd= 2)
+        self.previous_orders_frame = Frame(parent, bg=frame_colour, relief="groove", bd=2)
 
         self.ordering_frame.grid(row=0, column=0, sticky= N)
         self.current_items_frame.grid(row=0, column=1, sticky= N, padx=10, pady=0)
-
-        self.previous_orders_frame = Frame(parent, bg=frame_colour, relief="groove", bd=2)
 
         # Ordering frame content
         self.label_title = Label(self.ordering_frame, text="Create Order", font=font_title, bg=frame_colour)
@@ -174,7 +173,10 @@ class Menu:
 
 
     def place_order(self):
-        """ """
+        """
+        Validates the name input.
+        Finalizes and records the current order to the order listbox.
+        """
         name = self.name_entry.get().strip()
         if name == "":
             messagebox.showerror("Invalid Name", "Name field cannot be empty.")
@@ -191,48 +193,64 @@ class Menu:
 
 
     def item_price_calc(self):
-        """ """
+        """
+        Calculates total price by multiplying the selected item based by its quantity.
+        Appends the value to the order price list.
+        """
         quantity = int(self.number_of_items.get())
         self.items_value = self.current_item_price * quantity
         self.order_total_price.append(self.items_value)
 
 
     def order_price_calc(self):
-        """ """
+        """
+        Sums the price list.
+        Updates the displayed order price.
+        """
         self.order_price = sum(self.order_total_price)
         self.displayed_order_price = "Order Price: $" + format(self.order_price, ".2f")
         self.label_order_price.config(text=self.displayed_order_price)
 
 
     def item_number(self):
-        """This function increases the item number, displaying the current number of item in label_add_item"""
+        """
+        Updates the label that shows the current item number.
+        """
         self.display_item_num = ("Add Item " + str(self.current_item) + ":")
         self.label_add_item.config(text=self.display_item_num)
 
 
     def get_price(self, name):
-        """ """
+        """
+        Returns the price of a wrap based on its name.
+        """
         for wrap in self.wrap_menu:
             if wrap.name == name:
                 return wrap.price
             
     
     def update_price_label(self, selection):
-        """ """
+        """
+        Changes the price label shown when a wrap is selected.
+        """
         self.current_item_price = self.get_price(selection)
         self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
         self.label_items_price.config(text=self.displayed_price)
 
 
     def return_to_order(self):
-        """ """
+        """
+        Grids the frames for the main ordering screen, hides the previous orders frame.
+        """
         self.previous_orders_frame.grid_forget()
         self.ordering_frame.grid(row=0, column=0, sticky= N)
         self.current_items_frame.grid(row=0, column=1, sticky= N, padx=10, pady=0)
 
 
     def order_history(self):
-        """ """
+        """
+        Grids the previous orders frame, hides the frames for the main ordering screen.
+        """
         self.ordering_frame.grid_forget()
         self.current_items_frame.grid_forget()
         self.previous_orders_frame.grid()
