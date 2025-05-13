@@ -30,6 +30,8 @@ class Menu:
         font_mini_title = ("Verdana", 14, "bold")
         font_default = ("Verdana", 11)
 
+        frame_colour = "#ffffff"
+
         self.current_item = 1
         self.display_item_num = "Add Item 1:"
 
@@ -45,29 +47,29 @@ class Menu:
         self.order_price = sum(self.order_total_price)
         self.displayed_order_price = "Order Price: $" + format(self.order_price, ".2f")
  
-        self.ordering_frame = Frame(parent)
-        self.current_items_frame = Frame(parent)
+        self.ordering_frame = Frame(parent, bg=frame_colour, relief='groove', bd= 2)
+        self.current_items_frame = Frame(parent, bg=frame_colour, relief="groove", bd= 2)
 
         self.ordering_frame.grid(row=0, column=0)
         self.current_items_frame.grid(row=0, column=1, sticky=N, padx=10, pady=25)
 
-        self.previous_orders_frame = Frame(parent)
+        self.previous_orders_frame = Frame(parent, bg=frame_colour, relief="groove", bd=2)
 
         # Ordering frame content
-        self.label_title = Label(self.ordering_frame, text="Create Order:", font=font_title)
-        self.label_add_item = Label(self.ordering_frame, text=self.display_item_num, font=font_mini_title)
+        self.label_title = Label(self.ordering_frame, text="Create Order:", font=font_title, bg=frame_colour)
+        self.label_add_item = Label(self.ordering_frame, text=self.display_item_num, font=font_mini_title, bg=frame_colour)
 
-        self.label_item = Label(self.ordering_frame, text="What wrap would you like:", font=font_default)
+        self.label_item = Label(self.ordering_frame, text="What wrap would you like:", font=font_default, bg=frame_colour)
         self.item_dropdown = OptionMenu(self.ordering_frame, self.selected_item, *self.wrap_names, command=self.update_price_label)
         self.item_dropdown.config(width=10)
-        self.label_items_price = Label(self.ordering_frame, text=self.displayed_price, font=font_default)
+        self.label_items_price = Label(self.ordering_frame, text=self.displayed_price, font=font_default, bg=frame_colour)
 
-        self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_default)
+        self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_default, bg=frame_colour)
         self.number_of_items = Entry(self.ordering_frame, width=4, textvariable=self.quantity_var)
 
         self.button_add_item = Button(self.ordering_frame, text="Add Item", command=self.adding_item, font=font_default)
 
-        self.label_complete_order = Label(self.ordering_frame, text="Completing order:",font=font_mini_title)
+        self.label_complete_order = Label(self.ordering_frame, text="Completing order:",font=font_mini_title, bg=frame_colour)
 
         self.name_entry_label = Label(self.ordering_frame, text="Name:", font=font_default)
         self.name_entry = Entry(self.ordering_frame, width=45, textvariable=self.name_var)
@@ -92,8 +94,8 @@ class Menu:
 
         # Current items frame content
         self.items_listbox = Listbox(self.current_items_frame, width=40, height=15, bd=2, bg ="white", relief="sunken")
-        self.label_all_items = Label(self.current_items_frame, text="Current Items:", font=font_mini_title)
-        self.label_order_price = Label(self.current_items_frame, text=self.displayed_order_price, font=font_default)
+        self.label_all_items = Label(self.current_items_frame, text="Current Items:", font=font_mini_title, bg=frame_colour)
+        self.label_order_price = Label(self.current_items_frame, text=self.displayed_order_price, font=font_default, bg=frame_colour)
     
         # Current items packing
         self.label_all_items.pack(anchor=W, padx=(10))
@@ -101,7 +103,7 @@ class Menu:
         self.label_order_price.pack(anchor=W, padx=(10))
 
         # Orders frame content
-        self.label_previous_orders = Label(self.previous_orders_frame, text="Previous Orders:", font=font_title)
+        self.label_previous_orders = Label(self.previous_orders_frame, text="Previous Orders:", font=font_title, bg=frame_colour)
         self.prev_orders_listbox = Listbox(self.previous_orders_frame, width=40, height=15, bd=2, bg ="white", relief="sunken")
         self.back_to_order = Button(self.previous_orders_frame, text="Return To Ordering", command=self.return_to_order, font=font_default)
 
@@ -119,10 +121,13 @@ class Menu:
             messagebox.showerror("No Wrap Selected", "Please select a wrap from the dropdown menu.")
             return
         try:
-            if int(self.number_of_items.get()) < 1:
-                raise ValueError
+            if int(self.number_of_items.get()) < 1 or int(self.number_of_items.get()) > 99:
+                messagebox.showerror("Invalid Item Quantity", "Please enter a number between 1-99 for the quantity")
+                self.quantity_var.set("")
+                return
+
         except ValueError:
-            messagebox.showerror("Invalid Item Quantity", "Please enter a positive whole number for the quantity")
+            messagebox.showerror("Invalid Item Quantity", "Please enter a whole number for the quantity")
             self.quantity_var.set("")
             return
         self.item_price_calc()
