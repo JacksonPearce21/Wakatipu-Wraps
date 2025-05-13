@@ -120,7 +120,12 @@ class Menu:
 
 
     def adding_item(self):
-        """ """
+        """
+        Adds the selected wrap with its quantity to the current order.
+        Displays the item to the listbox with the total item price.
+        Validates user input, showing error messages for invalid selections or quantities.
+        Updates the order list, total price, and item number.
+        """
         if self.selected_item.get() == "Select Wrap":
             messagebox.showerror("No Wrap Selected", "Please select a wrap from the dropdown menu.")
             return
@@ -145,7 +150,9 @@ class Menu:
 
 
     def reset_add_item(self):
-        """ """
+        """
+        Resets the current item selection, quantity and price to default values.
+        """
         self.selected_item.set("Select Wrap")
         self.label_items_price.config(text="Price: $0.00")
         self.current_item_price = 0.00
@@ -153,7 +160,10 @@ class Menu:
 
 
     def reset_order(self):
-        """ """
+        """
+        Resets the entire order to its initial state:
+        Resets item listbox, total prices, item number and name entry.
+        """
         self.reset_add_item()
         self.items_listbox.delete(0, END)
         self.order_total_price.clear()
