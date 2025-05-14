@@ -218,9 +218,10 @@ class Menu:
         
         self.item_price_calc()
         item_order = (
-        " Item " + str(self.current_item) + ": " + self.number_of_items.get() +
-        "x " + self.selected_item.get() + " Wraps, $" +
-        str(format(self.items_value, ".2f")))
+            " Item " + str(self.current_item) + ": " +
+            self.number_of_items.get() + "x " +
+            self.selected_item.get() + " Wraps, $" +
+            str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
         self.current_item += 1
         self.item_number()
@@ -259,13 +260,17 @@ class Menu:
         """
         name = self.name_entry.get().strip()
         if name == "":
-            messagebox.showerror("Invalid Name", "Name field cannot be empty.")
+            messagebox.showerror(
+                "Invalid Name","Name field cannot be empty.")
             self.name_var.set("")
             return
         if len(self.order_total_price) == 0:
-            messagebox.showerror("Empty Order", "Please add items to your order.")
+            messagebox.showerror(
+                "Empty Order", "Please add items to your order.")
             return
-        order_info = (" Name: " + self.name_entry.get() + ", " + self.displayed_order_price + ".")
+        order_info = (
+            " Name: " + self.name_entry.get() + ", " +
+            self.displayed_order_price + ".")
         self.prev_orders_listbox.insert(END, order_info)
         messagebox.showinfo("Order Placed", order_info)
         self.reset_order()
@@ -288,16 +293,20 @@ class Menu:
         Updates the displayed order price.
         """
         self.order_price = sum(self.order_total_price)
-        self.displayed_order_price = "Order Price: $" + format(self.order_price, ".2f")
-        self.label_order_price.config(text=self.displayed_order_price)
+        self.displayed_order_price = "Order Price: $" + format(
+            self.order_price, ".2f")
+        self.label_order_price.config(
+            text=self.displayed_order_price)
 
 
     def item_number(self):
         """
         Updates the label that shows the current item number.
         """
-        self.display_item_num = ("Add Item " + str(self.current_item) + ":")
-        self.label_add_item.config(text=self.display_item_num)
+        self.display_item_num = (
+            "Add Item " + str(self.current_item) + ":")
+        self.label_add_item.config(
+            text=self.display_item_num)
 
 
     def get_price(self, name):
@@ -314,8 +323,10 @@ class Menu:
         Changes the price label shown when a wrap is selected.
         """
         self.current_item_price = self.get_price(selection)
-        self.displayed_price = "Price: $" + format(self.current_item_price, ".2f")
-        self.label_items_price.config(text=self.displayed_price)
+        self.displayed_price = "Price: $" + format(
+            self.current_item_price, ".2f")
+        self.label_items_price.config(
+            text=self.displayed_price)
 
 
     def return_to_order(self):
@@ -324,7 +335,8 @@ class Menu:
         """
         self.previous_orders_frame.grid_forget()
         self.ordering_frame.grid(row=0, column=0, sticky= N)
-        self.current_items_frame.grid(row=0, column=1, sticky= N, padx=10, pady=0)
+        self.current_items_frame.grid(
+            row=0, column=1, sticky= N, padx=10, pady=0)
 
 
     def order_history(self):
