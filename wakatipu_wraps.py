@@ -264,6 +264,11 @@ class Menu:
                 "Invalid Name","Name field cannot be empty.")
             self.name_var.set("")
             return
+        elif len(name) > 25:
+            messagebox.showerror(
+                "Name Too Long",
+                "Name cannot be longer than 25 characters.")
+            return
         if len(self.order_total_price) == 0:
             messagebox.showerror(
                 "Empty Order", "Please add items to your order.")
