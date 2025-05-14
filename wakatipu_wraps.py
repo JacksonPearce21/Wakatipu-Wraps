@@ -1,13 +1,31 @@
+"""
+Wakatipu Wraps - A GUI app for ordering wraps using Tkinter.
+
+This program allows users to build orders, see real-time pricing,
+and view previous order history. Designed for a small takeaway business.
+"""
+
 from tkinter import *
 from tkinter import messagebox
 
+
 class Wraps:
+    """
+    Represents a single wrap item with a name and price.
+    name: The name of the wrap.
+    price: The price of the wrap.
+    """
     def __init__(self, name, price):
         self.name = name
         self.price = price
 
 
 class Menu:
+    """
+    Manages the main GUI for Wakatipu Wraps using Tkinter.
+    Handles user interaction with Tkinter widgets
+    Includes pricing variables and lists as well.
+    """
     def __init__(self, parent):
         # Menu
         self.wrap_menu = [
@@ -146,7 +164,9 @@ class Menu:
             return
         
         self.item_price_calc()
-        item_order = (" Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
+        item_order = (" Item " + str(self.current_item)
+                    + ": " + self.number_of_items.get() + "x " + self.selected_item.get()
+                    + " Wraps, $" + str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
         self.current_item += 1
         self.item_number()
