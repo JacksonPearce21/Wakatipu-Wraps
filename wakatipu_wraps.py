@@ -155,15 +155,15 @@ class Menu:
         self.check_order_history.pack(anchor=E, padx=(10), pady=(3))
 
         # Current items frame content
-        self.items_listbox = Listbox(
-            self.current_items_frame, width=32, height=18, bd=3,
-            bg=frame_colour, relief="sunken", font=font_listbox)
-        self.items_listbox.pack(anchor=W, padx=(10), pady=(3))
-
         self.label_all_items = Label(
             self.current_items_frame, text="Current Items",
             font=font_title, bg=frame_colour)
         self.label_all_items.pack(anchor=N)
+
+        self.items_listbox = Listbox(
+            self.current_items_frame, width=32, height=18, bd=3,
+            bg=frame_colour, relief="sunken", font=font_listbox)
+        self.items_listbox.pack(anchor=W, padx=(10), pady=(3))
 
         self.label_order_price = Label(
             self.current_items_frame, text=self.displayed_order_price,
