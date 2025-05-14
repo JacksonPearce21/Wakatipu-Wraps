@@ -268,6 +268,7 @@ class Menu:
             messagebox.showerror(
                 "Name Too Long",
                 "Name cannot be longer than 25 characters.")
+            self.name_var.set("")
             return
         if len(self.order_total_price) == 0:
             messagebox.showerror(
