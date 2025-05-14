@@ -112,48 +112,79 @@ class Menu:
             font=font_default, bg=frame_colour)
         self.label_items_price.pack(anchor=W, padx=(10))
 
-        self.label_how_many = Label(self.ordering_frame, text="Amount of item:", font=font_default, bg=frame_colour)
+        self.label_how_many = Label(
+            self.ordering_frame, text="Amount of item:",
+            font=font_default, bg=frame_colour)
         self.label_how_many.pack(anchor=W, padx=(10))
 
-        self.number_of_items = Entry(self.ordering_frame, width=3, textvariable=self.quantity_var, relief="solid", font=font_default)
+        self.number_of_items = Entry(
+            self.ordering_frame, width=3, textvariable=self.quantity_var,
+            relief="solid", font=font_default)
         self.number_of_items.pack(anchor=W, padx=(14))
 
-        self.button_add_item = Button(self.ordering_frame, text="Add Item", command=self.adding_item, font=font_default, bg=add_button_bg, fg=frame_colour)
+        self.button_add_item = Button(
+            self.ordering_frame, text="Add Item",
+            command=self.adding_item, font=font_default,
+            bg=add_button_bg, fg=frame_colour)
         self.button_add_item.pack(anchor=E, padx=(10), pady=(10))
 
-        self.label_complete_order = Label(self.ordering_frame, text="Completing order:",font=font_mini_title, bg=frame_colour)
+        self.label_complete_order = Label(
+            self.ordering_frame, text="Completing order:",
+            font=font_mini_title, bg=frame_colour)
         self.label_complete_order.pack(anchor=W, padx=(10))
 
-        self.name_entry_label = Label(self.ordering_frame, text="Name:", font=font_default, bg=frame_colour)
+        self.name_entry_label = Label(
+            self.ordering_frame, text="Name:", font=font_default,
+            bg=frame_colour)
         self.name_entry_label.pack(anchor=W, padx=(10))
 
-        self.name_entry = Entry(self.ordering_frame, width=25, textvariable=self.name_var, relief="solid", font=font_default)
+        self.name_entry = Entry(
+            self.ordering_frame, width=25, textvariable=self.name_var,
+            relief="solid", font=font_default)
         self.name_entry.pack(anchor=W, padx=(14))
         
-        self.button_complete_order = Button(self.ordering_frame, text="Place Order", font=font_default, command=self.place_order, fg=frame_colour, bg=order_button_bg)
+        self.button_complete_order = Button(
+            self.ordering_frame, text="Place Order", font=font_default,
+            command=self.place_order, fg=frame_colour, bg=order_button_bg)
         self.button_complete_order.pack(anchor=E, padx=(10), pady=(5))
 
-        self.check_order_history = Button(self.ordering_frame, text ="Previous Orders", font=font_default, command=self.order_history, bg=button_frame_bg, fg=frame_colour)
+        self.check_order_history = Button(
+            self.ordering_frame, text ="Previous Orders",
+            font=font_default, command=self.order_history,
+            bg=button_frame_bg, fg=frame_colour)
         self.check_order_history.pack(anchor=E, padx=(10), pady=(3))
 
         # Current items frame content
-        self.items_listbox = Listbox(self.current_items_frame, width=32, height=18, bd=3, bg=frame_colour, relief="sunken", font=font_listbox)
+        self.items_listbox = Listbox(
+            self.current_items_frame, width=32, height=18, bd=3,
+            bg=frame_colour, relief="sunken", font=font_listbox)
         self.items_listbox.pack(anchor=W, padx=(10), pady=(3))
 
-        self.label_all_items = Label(self.current_items_frame, text="Current Items", font=font_title, bg=frame_colour)
+        self.label_all_items = Label(
+            self.current_items_frame, text="Current Items",
+            font=font_title, bg=frame_colour)
         self.label_all_items.pack(anchor=N)
 
-        self.label_order_price = Label(self.current_items_frame, text=self.displayed_order_price, font=font_default, bg=frame_colour)
+        self.label_order_price = Label(
+            self.current_items_frame, text=self.displayed_order_price,
+            font=font_default, bg=frame_colour)
         self.label_order_price.pack(anchor=W, padx=(10), pady=(3))
 
         # Orders frame content
-        self.label_previous_orders = Label(self.previous_orders_frame, text="Previous Orders", font=font_title, bg=frame_colour)
+        self.label_previous_orders = Label(
+            self.previous_orders_frame, text="Previous Orders",
+            font=font_title, bg=frame_colour)
         self.label_previous_orders.pack(anchor=N)
 
-        self.prev_orders_listbox = Listbox(self.previous_orders_frame, width=35, height=21, bd=3, bg=frame_colour, relief="sunken", font=font_listbox)
+        self.prev_orders_listbox = Listbox(
+            self.previous_orders_frame, width=35, height=21, bd=3,
+            bg=frame_colour, relief="sunken", font=font_listbox)
         self.prev_orders_listbox.pack(anchor=W, padx=(10), pady=(3))
 
-        self.back_to_order = Button(self.previous_orders_frame, text="Return To Ordering", command=self.return_to_order, font=font_default, bg=button_frame_bg, fg=frame_colour)
+        self.back_to_order = Button(
+            self.previous_orders_frame, text="Return To Ordering",
+            command=self.return_to_order, font=font_default,
+            bg=button_frame_bg, fg=frame_colour)
         self.back_to_order.pack(anchor=E, padx=(10), pady=(3))
 
     # --- Functions ---
@@ -166,21 +197,30 @@ class Menu:
         Updates the order list, total price, and item number.
         """
         if self.selected_item.get() == "Select Wrap":
-            messagebox.showerror("No Wrap Selected", "Please select a wrap from the dropdown menu.")
+            messagebox.showerror(
+                "No Wrap Selected",
+                "Please select a wrap from the dropdown menu.")
             return
         
         try:
             if int(self.number_of_items.get()) < 1 or int(self.number_of_items.get()) > 99:
-                messagebox.showerror("Invalid Item Quantity", "Please enter a number between 1-99 for the quantity")
+                messagebox.showerror(
+                    "Invalid Item Quantity",
+                    "Please enter a number between 1-99 for the quantity")
                 self.quantity_var.set("")
                 return
         except ValueError:
-            messagebox.showerror("Invalid Item Quantity", "Please enter a whole number for the quantity")
+            messagebox.showerror(
+                "Invalid Item Quantity",
+                "Please enter a whole number for the quantity")
             self.quantity_var.set("")
             return
         
         self.item_price_calc()
-        item_order = (" Item " + str(self.current_item) + ": " + self.number_of_items.get() + "x " + self.selected_item.get() + " Wraps, $" + str(format(self.items_value, ".2f")))
+        item_order = (
+        " Item " + str(self.current_item) + ": " + self.number_of_items.get() +
+        "x " + self.selected_item.get() + " Wraps, $" +
+        str(format(self.items_value, ".2f")))
         self.items_listbox.insert(END, item_order)
         self.current_item += 1
         self.item_number()
